@@ -11,7 +11,7 @@ public class Perceptron {
     public Perceptron() {
         input = 0;        
         numberOfChildren = 0;
-        biasWeight = Math.random();
+        biasWeight = 1.5;//Math.random();
     }
     
     public void addChild(Perceptron c) {
@@ -29,7 +29,7 @@ public class Perceptron {
         
         double[] weightsNew = new double[numberOfChildren+1];
         System.arraycopy(weights,0,weightsNew,0,numberOfChildren);
-        weightsNew[numberOfChildren] = Math.random();
+        weightsNew[numberOfChildren] = 1;//Math.random();
         weights = weightsNew;
         
         numberOfChildren++;
@@ -51,7 +51,8 @@ public class Perceptron {
 
     private void activate() {
         // Run the total input to the neuron through the activation function. 
-        output = 1/(1+Math.exp(-input));
+        //output = 1/(1+Math.exp(-input));
+        output = input >= 0 ? 1 : 0;
     }
     public double getOutput() {
         return output;
