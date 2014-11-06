@@ -51,7 +51,10 @@ public class Perceptron {
 
     private void activate() {
         // Run the total input to the neuron through the activation function. 
-        output = 1/(1+Math.exp(-input));
+        if(NeuralNetwork.activationFunction==1)
+            output = 1/(1+Math.exp(-input));
+        else
+            output = input >= 0 ? 1 : 0;
     }
     public double getOutput() {
         return output;

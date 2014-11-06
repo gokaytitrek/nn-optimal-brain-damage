@@ -3,7 +3,7 @@ package skynet;
 public class NeuralNetwork {
     int numberOfLayers;
     private int numberOfInputs;
-    private int activationFunction; 
+    public static int activationFunction; 
     protected Layer[] layers;   
     
     public NeuralNetwork(int numberOfInputs, int activationFunction) {
