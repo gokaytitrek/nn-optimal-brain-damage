@@ -7,6 +7,7 @@ public class Perceptron {
     protected double input; 
     protected double output;
     protected double biasWeight; // Bias weight
+    protected double delta;
     
     public Perceptron() {
         input = 0;        
@@ -59,12 +60,23 @@ public class Perceptron {
         return 1/(1+Math.exp(-input));
     }
     
-    private double sigmoid_derivative(double input)
+    private double threshold(double input)
+    {
+        double tresholdValue=0;
+        return input <=  tresholdValue ? 0 : 1;
+    }
+    
+    private double sigmoid_derivative()
     {
         return sigmoid(input) * (1- sigmoid(input));
     }
     
     public double getOutput() {
         return output;
+    }
+    
+    public void calculateDelta(double targetOutput)
+    {
+        this.delta = sigmoid_derivative() * (targetOutput - output);
     }
 }

@@ -56,8 +56,37 @@ public class NeuralNetwork {
         return out;
     }
   
-    public void backPropagation()
+    public void backPropagation(double[][] allData)
     {
-    
+        int epoch = 0;
+        while (epoch < 1000)
+        {
+            for (double[] inputTargetData: allData) {
+                double [] inputData = new double[numberOfInputs];
+                double [] targetData = new double[layers[numberOfLayers-1].size];
+
+                System.arraycopy(inputTargetData, 0, inputData, 0, numberOfInputs);
+                System.arraycopy(inputTargetData, numberOfInputs, targetData, 0, layers[numberOfLayers-1].size);
+                // Run the neural network on given input data
+                for (int i=0;i<inputData.length;i++) {
+                    // Give input as stimulation to the first layer
+                    //Perceptron p = layers[0].getPerceptron(i);
+                    layers[0].getPerceptron(i).stimulate(inputData[i]);
+                }
+                for (int layer = 0; layer<numberOfLayers;layer++)
+                    for (int j=0;j<layers[layer].size;j++) 
+                        // Run each neuron in each layer                
+                        layers[layer].getPerceptron(j).run();
+
+                for (int outputNodes = 0 ; outputNodes < layers[numberOfLayers-1].size ; outputNodes++) {
+                        layers[numberOfLayers-1].getPerceptron(outputNodes).calculateDelta(targetData[outputNodes]);
+                    }
+                
+                
+                epoch++;
+        }
+                
+        }
+        
     }
 }
