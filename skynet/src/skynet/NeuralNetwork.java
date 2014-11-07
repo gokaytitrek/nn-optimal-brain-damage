@@ -4,6 +4,7 @@ public class NeuralNetwork {
     int numberOfLayers;
     private int numberOfInputs;
     private int activationFunction; 
+    private double learnRate = 0.001;
     protected Layer[] layers;   
     
     public NeuralNetwork(int numberOfInputs, int activationFunction) {
@@ -81,8 +82,28 @@ public class NeuralNetwork {
                 for (int outputNodes = 0 ; outputNodes < layers[numberOfLayers-1].size ; outputNodes++) {
                         layers[numberOfLayers-1].getPerceptron(outputNodes).calculateDelta(targetData[outputNodes]);
                     }
-                
-                
+                /*
+                for (int i = numberOfLayers - 2 ; i> 0 ; i ++)
+                {
+                    for (int j = 0 ; j< layers[i].size ; j++)
+                    {
+                        double sum = 0;
+                        for (int k=0;k<layers[i].getPerceptron(j).numberOfChildren;k++)
+                        {
+                            sum += layers[i+1].getPerceptron(j).delta * layers[i].getPerceptron(j).weights[k];
+                        }
+                        layers[i].getPerceptron(j).delta = sum * layers[i].getPerceptron(j).sigmoid_derivative();
+                        
+                        for (Perceptron p : layers[i+1].perceptrons)
+                        {
+                            for(double weight : p.weights)
+                            {
+                                weight = weight + (learnRate*p.input*p.delta);
+                            }
+                        }
+                    }
+                }
+                */
                 epoch++;
         }
                 

@@ -66,7 +66,7 @@ public class Perceptron {
         return input <=  tresholdValue ? 0 : 1;
     }
     
-    private double sigmoid_derivative()
+    public double sigmoid_derivative()
     {
         return sigmoid(input) * (1- sigmoid(input));
     }

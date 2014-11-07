@@ -2,7 +2,7 @@ package skynet;
 
 public class Layer {
     protected int size;
-    private Perceptron[] perceptrons;
+    protected Perceptron[] perceptrons;
     
     public Layer(int size, int type) {
         this.size = size;
