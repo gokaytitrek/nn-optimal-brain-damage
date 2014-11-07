@@ -50,8 +50,9 @@ public class Perceptron {
     }
 
     private void activate() {
-        // Run the total input to the neuron through the activation function. 
-        output = 1/(1+Math.exp(-input));
+        // Threshold function
+        double thresholdValue = 0;
+        output = input <= thresholdValue ? 0 : 1 ;       
     }
     public double getOutput() {
         return output;
