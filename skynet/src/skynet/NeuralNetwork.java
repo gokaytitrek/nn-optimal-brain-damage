@@ -56,4 +56,8 @@ public class NeuralNetwork {
         return out;
     }
   
+    public void backPropagation()
+    {
+    
+    }
 }

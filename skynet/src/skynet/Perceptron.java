@@ -51,8 +51,19 @@ public class Perceptron {
 
     private void activate() {
         // Run the total input to the neuron through the activation function. 
-        output = 1/(1+Math.exp(-input));
+        output = sigmoid(input);
     }
+    
+    private double sigmoid(double input)
+    {
+        return 1/(1+Math.exp(-input));
+    }
+    
+    private double sigmoid_derivative(double input)
+    {
+        return sigmoid(input) * (1- sigmoid(input));
+    }
+    
     public double getOutput() {
         return output;
     }
