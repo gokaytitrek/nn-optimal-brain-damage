@@ -69,20 +69,23 @@ public class NeuralNetwork {
                 System.arraycopy(inputTargetData, 0, inputData, 0, numberOfInputs);
                 System.arraycopy(inputTargetData, numberOfInputs, targetData, 0, layers[numberOfLayers-1].size);
                 // Run the neural network on given input data
+                /*
                 for (int i=0;i<inputData.length;i++) {
                     // Give input as stimulation to the first layer
                     //Perceptron p = layers[0].getPerceptron(i);
                     layers[0].getPerceptron(i).stimulate(inputData[i]);
                 }
-                for (int layer = 0; layer<numberOfLayers;layer++)
-                    for (int j=0;j<layers[layer].size;j++) 
-                        // Run each neuron in each layer                
-                        layers[layer].getPerceptron(j).run();
+                */
+                for (Layer l : layers)
+                {
+                   for (int j=0;j<l.size;j++)              
+                        l.getPerceptron(j).run();
+                }
 
                 for (int outputNodes = 0 ; outputNodes < layers[numberOfLayers-1].size ; outputNodes++) {
                         layers[numberOfLayers-1].getPerceptron(outputNodes).calculateDelta(targetData[outputNodes]);
                     }
-                /*
+                
                 for (int i = numberOfLayers - 2 ; i> 0 ; i ++)
                 {
                     for (int j = 0 ; j< layers[i].size ; j++)
@@ -103,7 +106,7 @@ public class NeuralNetwork {
                         }
                     }
                 }
-                */
+                
                 epoch++;
         }
                 
