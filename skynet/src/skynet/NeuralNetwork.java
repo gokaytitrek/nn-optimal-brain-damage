@@ -55,5 +55,64 @@ public class NeuralNetwork {
             out[i]=layers[numberOfLayers-1].getPerceptron(i).getOutput();
         return out;
     }
-  
+    public static double sigmoidDerivative(double input) {
+        double sig = 1/(1+Math.exp(-input));
+        return sig*(1-sig);
+    }
+    public void train(double[][] traindata,double[][] labels) {
+        double errorThreshold = 0.01;
+        double E = 1;
+        int epoch = 0;
+        double[] input = new double[4];
+        double[] output;
+        double delta;
+        double totalNextError;
+        double alpha = 0.001;
+        boolean show=false;
+        while (E>errorThreshold) {
+            epoch++; 
+            if (epoch%10000==0) show=true;
+            if (show) System.out.print("Epoch: " + epoch);
+            for (int sample=0;sample<traindata.length;sample++) {
+                for (int i=0;i<4;i++) {
+                    input[i]=traindata[sample][i];}
+                output = run(input);
+                for (int i=0;i<labels[0].length;i++) {
+                     delta =  NeuralNetwork.sigmoidDerivative(layers[numberOfLayers-1].getPerceptron(i).oldInput)
+                            *(labels[sample][i]-output[i]);
+                     layers[numberOfLayers-1].getPerceptron(i).delta = delta;
+                }
+                for (int layer = numberOfLayers-2;layer>=0;layer--) {                    
+                    for (int node=0;node<layers[layer].size;node++) {
+                        Perceptron n = layers[layer].getPerceptron(node);
+                        totalNextError = 0;
+                        for (int nodeNextLayer=0;nodeNextLayer<layers[layer+1].size;nodeNextLayer++) {
+                            totalNextError+=n.weights[nodeNextLayer]*layers[layer+1].getPerceptron(nodeNextLayer).delta;
+                        }
+                        n.delta = sigmoidDerivative(n.oldInput)*totalNextError;
+                        for (int next=0;next<layers[layer+1].size;next++) {
+                            n.weights[next]+=alpha*n.output*layers[layer+1].getPerceptron(next).delta;
+                            layers[layer+1].getPerceptron(next).biasWeight+=alpha*(-1)*layers[layer+1].getPerceptron(next).delta; 
+                        }
+                    }
+                }                           
+            }
+            E=0;
+            for (int sample=0;sample<traindata.length;sample++) {
+                for (int i=0;i<4;i++) {
+                    input[i]=traindata[sample][i];}
+                output = run(input);
+                for (int i=0;i<labels[0].length;i++) {
+                    E+=(1.0/2)*Math.pow(labels[sample][i]-output[i],2);
+                }                
+            }
+            if (show) {System.out.println("\tTotal square error: "+ E); show=false;}
+            
+            
+            
+        }
+        
+        
+    }
+   
 }

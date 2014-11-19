@@ -4,14 +4,15 @@ public class Perceptron {
     protected int numberOfChildren;
     protected Perceptron[] children;
     protected double[] weights;
-    protected double input; 
+    protected double input, oldInput; 
     protected double output;
     protected double biasWeight; // Bias weight
+    protected double delta;
     
     public Perceptron() {
         input = 0;        
         numberOfChildren = 0;
-        biasWeight = Math.random();
+        biasWeight = 0; //Math.random();
     }
     
     public void addChild(Perceptron c) {
@@ -46,6 +47,7 @@ public class Perceptron {
         activate(); // Run input through the activation function. 
         for (int i=0;i<numberOfChildren;i++)
             children[i].stimulate(output*weights[i]); // Stimulate all children
+        oldInput=input;
         input=0; // Reset input
     }
 
