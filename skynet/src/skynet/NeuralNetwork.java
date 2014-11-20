@@ -69,7 +69,7 @@ public class NeuralNetwork {
         double sig = 1/(1+Math.exp(-input));
         return sig*(1-sig);
     }
-    public void train(double[][] traindata,double[][] labels) {
+    public void train(double[][] traindata) {
         double errorThreshold = 0.01;
         double E = 1;
         int epoch = 0;
@@ -87,9 +87,9 @@ public class NeuralNetwork {
                 for (int i=0;i<4;i++) {
                     input[i]=traindata[sample][i];}
                 output = run(input);
-                for (int i=0;i<labels[0].length;i++) {
+                for (int i=0;i<traindata[0].length-4;i++) {
                      delta =  NeuralNetwork.sigmoidDerivative(layers[numberOfLayers-1].getPerceptron(i).oldInput)
-                            *(labels[sample][i]-output[i]);
+                            *(traindata[sample][i+4]-output[i]);
                      layers[numberOfLayers-1].getPerceptron(i).delta = delta;
                 }
                 for (int layer = numberOfLayers-2;layer>=0;layer--) {                    
@@ -112,8 +112,8 @@ public class NeuralNetwork {
                 for (int i=0;i<4;i++) {
                     input[i]=traindata[sample][i];}
                 output = run(input);
-                for (int i=0;i<labels[0].length;i++) {
-                    E+=(1.0/2)*Math.pow(labels[sample][i]-output[i],2);
+                for (int i=0;i<traindata[0].length-4;i++) {
+                    E+=(1.0/2)*Math.pow(traindata[sample][i+4]-output[i],2);
                 }                
             }
             if (show) {System.out.println("\tTotal square error: "+ E); show=false;} 

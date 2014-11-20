@@ -33,9 +33,7 @@ public class SkyNet {
         double [][] testdata = new double[testDataSize][inputSize+outputSize];
         nn.makeTrainData(data,traindata,testdata);
         
-        double [][] trainlabels = {{1,0,0},{0,1,0},{0,0,1}};
-
-        //nn.train(traindata,trainlabels);
+        nn.train(traindata);
         double[] input = {1,0,1,1};
         double [] output = nn.run(input);
         
