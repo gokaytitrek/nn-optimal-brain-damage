@@ -1,8 +1,15 @@
 package skynet;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class SkyNet {
     // Test class
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        read();
         NeuralNetwork nn = new NeuralNetwork(4,0);
         Layer l1 = new Layer(6,0);
         nn.addLayer(l1);
@@ -18,5 +25,16 @@ public class SkyNet {
         for (int i=0;i<output.length;i++)
             System.out.println(output[i]);
         
+    }
+    
+    public static void read() throws FileNotFoundException, IOException
+    {
+        String FolderPath = (new File(".").getAbsolutePath())+"/Iris_data.txt";
+        BufferedReader br = new BufferedReader(new FileReader(FolderPath));
+        String line = null;
+       
+        while ((line = br.readLine()) != null) {
+            String a = line;
+        }
     }
 }
