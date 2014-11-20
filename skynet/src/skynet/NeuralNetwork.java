@@ -1,5 +1,15 @@
 package skynet;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.LineNumberReader;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+
 public class NeuralNetwork {
     int numberOfLayers;
     private int numberOfInputs;
@@ -106,13 +116,70 @@ public class NeuralNetwork {
                     E+=(1.0/2)*Math.pow(labels[sample][i]-output[i],2);
                 }                
             }
-            if (show) {System.out.println("\tTotal square error: "+ E); show=false;}
+            if (show) {System.out.println("\tTotal square error: "+ E); show=false;} 
+        }
+    }
+    
+    public double [][] readData(String fileName,HashMap<String,double[]> labels,int inputSize,int outputSize) throws FileNotFoundException, IOException
+    {
+        int dataSetSize = countFileLines(fileName);
+
+        String FolderPath = (new File(".").getAbsolutePath())+"/"+fileName;
+        BufferedReader br = new BufferedReader(new FileReader(FolderPath));
+        String line = null;
+        double [][] data=new double[dataSetSize][inputSize+outputSize];
+        int lineCount=0;
+
+        while ((line = br.readLine()) != null) {
+            String [] properties=  line.split(",");
             
+            int arrayCount=0;
+            for(String property : properties)
+            {
+                if(arrayCount<inputSize)
+                    data[lineCount][arrayCount]=Double.parseDouble(property);
+                else
+                {
+                    System.arraycopy(labels.get(property), 0, data[lineCount], inputSize, outputSize);
+                    break;
+                }
+                    
+                arrayCount++;
+            }
             
-            
+            lineCount++;
         }
         
+        return data;
+    }
+    
+    private int countFileLines(String filename) throws IOException {
+        LineNumberReader reader  = new LineNumberReader(new FileReader(filename));
+        int cnt = 0;
+        String lineRead = "";
+        while ((lineRead = reader.readLine()) != null) {}
+        cnt = reader.getLineNumber(); 
+        reader.close();
+        return cnt;
         
+    }
+    
+    private void shuffleArray(double[][] data)
+    {
+        Collections.shuffle(Arrays.asList(data));
+    }
+    
+    public void makeTrainData(double[][] data,double[][] trainData, double[][] testData)
+    {
+        shuffleArray(data);
+        
+        for(int i=0;i < trainData.length ; i++)
+            for(int j=0; j < data[0].length;j++)
+                trainData[i][j] = data[i][j];
+        
+        for(int i=0;i < testData.length ; i++)
+            for(int j=0; j < data[0].length;j++)
+                testData[i][j] = data[trainData.length+i][j];
     }
    
 }
