@@ -14,7 +14,7 @@ public class SkyNet {
         nn.addLayer(l2);
         
         int trainDataRate = 80;//%
-        String fileName="Iris_data.txt";
+        String fileName="Iris_data.txt";//~/rootFolder/Iris_data.txt
         int inputSize=4;
         int outputSize=3;
         
