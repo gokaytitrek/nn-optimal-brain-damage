@@ -13,7 +13,7 @@ public class SkyNet {
         Layer l2 = new Layer(3,0);
         nn.addLayer(l2);
         
-        int trainDataRate = 80;//%80
+        int trainDataRate = 80;//%
         String fileName="Iris_data.txt";
         int inputSize=4;
         int outputSize=3;
@@ -34,12 +34,32 @@ public class SkyNet {
         nn.makeTrainData(data,traindata,testdata);
         
         nn.train(traindata);
-        double[] input = {1,0,1,1};
-        double [] output = nn.run(input);
         
-        for (int i=0;i<output.length;i++)
-            System.out.println(output[i]);
-        
+        for(double[] test : testdata)
+        {
+            double[] input = new double[inputSize];
+            double[] desiredOutput = new double[outputSize];
 
+            System.arraycopy(test, 0, input, 0, inputSize);
+
+            System.arraycopy(test, inputSize, desiredOutput, 0, outputSize);
+
+            double [] output = nn.run(input);
+
+            System.out.println(); 
+            System.out.println(); 
+
+            System.out.println("Desired OutPut:");
+            for (int i=0;i<desiredOutput.length;i++)
+                System.out.print(desiredOutput[i] + "\t");
+
+            System.out.println();
+
+            System.out.println("NN OutPut:");
+            for (int i=0;i<output.length;i++)
+                System.out.print(output[i] + "\t");
+        }
+        
+        System.out.println();  
     }
 }
