@@ -15,17 +15,17 @@ public class SkyNet {
         
         int trainDataRate = 80;//%
         String fileName="Iris_data.txt";//~/rootFolder/Iris_data.txt
-        int inputSize=4;
-        int outputSize=3;
+        int inputSize=nn.layers[0].size;
+        int outputSize=nn.layers[nn.layers.length-1].size;
         
         // Iris setosa = 0 0 1, Iris versicolor = 0 1 0, Iris virginica = 1 0 0
         HashMap<String, double[]> labels = new HashMap<String, double[]>();
         labels.put("Iris-setosa", new double[] {0,0,1});
         labels.put("Iris-versicolor", new double[] {0,1,0});
         labels.put("Iris-virginica", new double[] {1,0,0});
-        
+
         double [][] data = nn.readData(fileName,labels,inputSize,outputSize);
-        
+
         int trainDataSize = data.length*trainDataRate/100;
         int testDataSize = data.length - trainDataSize;
         

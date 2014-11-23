@@ -79,17 +79,19 @@ public class NeuralNetwork {
         double totalNextError;
         double alpha = 0.001;
         boolean show=false;
+        int inputSize = layers[0].size;
+        
         while (E>errorThreshold) {
             epoch++; 
             if (epoch%10000==0) show=true;
             if (show) System.out.print("Epoch: " + epoch);
             for (int sample=0;sample<traindata.length;sample++) {
-                for (int i=0;i<4;i++) {
+                for (int i=0;i<inputSize;i++) {
                     input[i]=traindata[sample][i];}
                 output = run(input);
-                for (int i=0;i<traindata[0].length-4;i++) {
+                for (int i=0;i<traindata[0].length-inputSize;i++) {
                      delta =  NeuralNetwork.sigmoidDerivative(layers[numberOfLayers-1].getPerceptron(i).oldInput)
-                            *(traindata[sample][i+4]-output[i]);
+                            *(traindata[sample][i+inputSize]-output[i]);
                      layers[numberOfLayers-1].getPerceptron(i).delta = delta;
                 }
                 for (int layer = numberOfLayers-2;layer>=0;layer--) {                    
@@ -109,11 +111,11 @@ public class NeuralNetwork {
             }
             E=0;
             for (int sample=0;sample<traindata.length;sample++) {
-                for (int i=0;i<4;i++) {
+                for (int i=0;i<inputSize;i++) {
                     input[i]=traindata[sample][i];}
                 output = run(input);
-                for (int i=0;i<traindata[0].length-4;i++) {
-                    E+=(1.0/2)*Math.pow(traindata[sample][i+4]-output[i],2);
+                for (int i=0;i<traindata[0].length-inputSize;i++) {
+                    E+=(1.0/2)*Math.pow(traindata[sample][i+inputSize]-output[i],2);
                 }                
             }
             if (show) {System.out.println("\tTotal square error: "+ E); show=false;} 
@@ -149,7 +151,6 @@ public class NeuralNetwork {
             
             lineCount++;
         }
-        
         return data;
     }
     
