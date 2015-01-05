@@ -182,5 +182,41 @@ public class NeuralNetwork {
             for(int j=0; j < data[0].length;j++)
                 testData[i][j] = data[trainData.length+i][j];
     }
-   
+    
+    public void findMinWeightedPerceptron()
+    {
+        //init min weight
+        double minWeight = sumOfPerceptronWeight(layers[1].getPerceptron(0));
+        Perceptron minWeightPerceptron = layers[1].getPerceptron(0);
+        Layer minWeightLayer = layers[1];
+        for (Layer l : layers) {
+            //Find hidden layer
+            //if(!l.equals(layers[0]) || !l.equals(layers[numberOfLayers-1]))
+            //if(layerCounter != 0 && layerCounter != numberOfLayers-1)
+            //Hidden layer
+            if((l!=layers[0]) && (l!=layers[numberOfLayers-1]) && l.size > 1)
+            {
+                //current layers Perceptrons
+                for (int i = 0; i < l.size; i++) {
+                    if(minWeight > sumOfPerceptronWeight(l.getPerceptron(i)))
+                    {
+                        minWeight = sumOfPerceptronWeight(l.getPerceptron(i));
+                        minWeightPerceptron = l.getPerceptron(i);
+                        minWeightLayer = l;
+                    }
+                }
+            }
+        }
+        
+        minWeightLayer.deletePerceptron(minWeightPerceptron);
+    }
+    
+    private double sumOfPerceptronWeight(Perceptron p)
+    {
+        double sum = 0;
+        for (int i = 0; i < p.weights.length; i++) {
+            sum += p.weights[i];
+        }
+        return sum;
+    }
 }
