@@ -33,7 +33,7 @@ public class SkyNet {
         double [][] testdata = new double[testDataSize][inputSize+outputSize];
         nn.makeTrainData(data,traindata,testdata);
         
-        nn.train(traindata);
+        //nn.train(traindata);
         
         for(double[] test : testdata)
         {
@@ -45,7 +45,11 @@ public class SkyNet {
             System.arraycopy(test, inputSize, desiredOutput, 0, outputSize);
 
             double [] output = nn.run(input);
-
+            
+            nn.findMinWeightedPerceptron();
+            
+            output = nn.run(input);
+            
             System.out.println(); 
             System.out.println(); 
 
