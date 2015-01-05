@@ -9,6 +9,7 @@ import java.io.LineNumberReader;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 public class NeuralNetwork {
     int numberOfLayers;
@@ -70,8 +71,8 @@ public class NeuralNetwork {
         return sig*(1-sig);
     }
     public void train(double[][] traindata) {
-        double errorThreshold = 0.01;
-        double E = 1;
+        double errorThreshold = 12;
+        double E = 15;
         int epoch = 0;
         double[] input = new double[4];
         double[] output;
@@ -186,21 +187,18 @@ public class NeuralNetwork {
     public void findMinWeightedPerceptron()
     {
         //init min weight
-        double minWeight = sumOfPerceptronWeight(layers[1].getPerceptron(0));
+        double minWeight = hessianMatrix(layers[1].getPerceptron(0));
         Perceptron minWeightPerceptron = layers[1].getPerceptron(0);
         Layer minWeightLayer = layers[1];
         for (Layer l : layers) {
-            //Find hidden layer
-            //if(!l.equals(layers[0]) || !l.equals(layers[numberOfLayers-1]))
-            //if(layerCounter != 0 && layerCounter != numberOfLayers-1)
             //Hidden layer
             if((l!=layers[0]) && (l!=layers[numberOfLayers-1]) && l.size > 1)
             {
                 //current layers Perceptrons
                 for (int i = 0; i < l.size; i++) {
-                    if(minWeight > sumOfPerceptronWeight(l.getPerceptron(i)))
+                    if(minWeight > hessianMatrix(l.getPerceptron(i)))
                     {
-                        minWeight = sumOfPerceptronWeight(l.getPerceptron(i));
+                        minWeight = hessianMatrix(l.getPerceptron(i));
                         minWeightPerceptron = l.getPerceptron(i);
                         minWeightLayer = l;
                     }
@@ -210,13 +208,14 @@ public class NeuralNetwork {
         
         minWeightLayer.deletePerceptron(minWeightPerceptron);
     }
-    
-    private double sumOfPerceptronWeight(Perceptron p)
-    {
-        double sum = 0;
-        for (int i = 0; i < p.weights.length; i++) {
-            sum += p.weights[i];
-        }
-        return sum;
+   
+    public double hessianMatrix(Perceptron p) {
+            double hessian = 0;
+
+            for(int i = 0; i < p.weights.length; i++) {
+                    double w = p.weights[i];
+                    hessian += 2 * sigmoidDerivative(w) * sigmoidDerivative(w) * p.oldInput * p.oldInput;
+            }
+            return hessian;
     }
 }
