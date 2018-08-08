@@ -9,6 +9,7 @@ import java.io.LineNumberReader;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 public class NeuralNetwork {
     int numberOfLayers;
@@ -70,8 +71,8 @@ public class NeuralNetwork {
         return sig*(1-sig);
     }
     public void train(double[][] traindata) {
-        double errorThreshold = 0.01;
-        double E = 1;
+        double errorThreshold = 12;
+        double E = 15;
         int epoch = 0;
         double[] input = new double[4];
         double[] output;
@@ -182,5 +183,39 @@ public class NeuralNetwork {
             for(int j=0; j < data[0].length;j++)
                 testData[i][j] = data[trainData.length+i][j];
     }
+    
+    public void findMinWeightedPerceptron()
+    {
+        //init min weight
+        double minWeight = hessianMatrix(layers[1].getPerceptron(0));
+        Perceptron minWeightPerceptron = layers[1].getPerceptron(0);
+        Layer minWeightLayer = layers[1];
+        for (Layer l : layers) {
+            //Hidden layer
+            if((l!=layers[0]) && (l!=layers[numberOfLayers-1]) && l.size > 1)
+            {
+                //current layers Perceptrons
+                for (int i = 0; i < l.size; i++) {
+                    if(minWeight > hessianMatrix(l.getPerceptron(i)))
+                    {
+                        minWeight = hessianMatrix(l.getPerceptron(i));
+                        minWeightPerceptron = l.getPerceptron(i);
+                        minWeightLayer = l;
+                    }
+                }
+            }
+        }
+        
+        minWeightLayer.deletePerceptron(minWeightPerceptron);
+    }
    
+    public double hessianMatrix(Perceptron p) {
+            double hessian = 0;
+
+            for(int i = 0; i < p.weights.length; i++) {
+                    double w = p.weights[i];
+                    hessian += 2 * sigmoidDerivative(w) * sigmoidDerivative(w) * p.oldInput * p.oldInput;
+            }
+            return hessian;
+    }
 }

@@ -1,5 +1,9 @@
 package skynet;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class Layer {
     protected int size;
     private Perceptron[] perceptrons;
@@ -18,6 +22,16 @@ public class Layer {
     public Perceptron getPerceptron(int k) {
         // Return kth perceptron in the layer. 
         return perceptrons[k];
+    }
+    
+    public void deletePerceptron(Perceptron p)
+    {
+        Perceptron[] newPerceptrons = new Perceptron[this.perceptrons.length-1];
+        List<Perceptron> list = new ArrayList<Perceptron>(Arrays.asList(this.perceptrons));
+        list.remove(p);
+        list.toArray(newPerceptrons);
+        this.perceptrons = newPerceptrons;
+        this.size--;
     }
     
 }
